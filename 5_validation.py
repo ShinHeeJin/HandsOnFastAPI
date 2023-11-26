@@ -61,6 +61,17 @@ async def read_items6(q: Annotated[str | None, Query(default=...)]):
 # Query parameter list / multiple values
 # http://127.0.0.1:8000/items7/?q=apple&q=banan
 @app.get("/items7/")
-async def read_items7(q: Annotated[list[str] | None, Query()] = None):
+async def read_items7(q: Annotated[list[str] | None, Query()] = ["banana", "apple"]):
     """cf) you need to explicitly use Query, otherwise it would be interpreted as a request body."""
+    return {"q": q}
+
+
+# metadata ( title & description )
+@app.get("/items8/")
+async def read_items8(
+    q: Annotated[
+        str | None,
+        Query(title="Query String!", description="Query String for the items to saerch in data db", min_length=3),
+    ] = None
+):
     return {"q": q}
