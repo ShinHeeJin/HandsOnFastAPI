@@ -31,5 +31,14 @@ async def read_items3(
 ):
     result = dict()
     if q1:
-        result.update({"q": q1})
+        result.update({"q1": q1})
+    return result
+
+
+# add more validations
+@app.get("/items/")
+async def read_items4(q: Annotated[str | None, Query(min_length=3, max_length=50)] = None):
+    result = dict()
+    if q:
+        result.update({"q": q})
     return result
