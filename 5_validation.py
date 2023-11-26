@@ -36,9 +36,15 @@ async def read_items3(
 
 
 # add more validations
-@app.get("/items/")
+@app.get("/items4/")
 async def read_items4(q: Annotated[str | None, Query(min_length=3, max_length=50)] = None):
     result = dict()
     if q:
         result.update({"q": q})
     return result
+
+
+# Add regular expressions
+@app.get("/items5/")
+async def read_items5(q: Annotated[str | None, Query(min_length=3, max_length=10, pattern="^api_v\d+$")]):
+    return q
