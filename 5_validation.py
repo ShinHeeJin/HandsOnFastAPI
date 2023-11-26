@@ -21,3 +21,15 @@ async def read_items2(q: str | None = Query(default=None, max_length=50)):
     if q:
         result.update({"q": q})
     return result
+
+
+# Query as the default value or in Annotated
+@app.get("/items3/")
+async def read_items3(
+    q1: str | None = Query(default="rick"),
+    q2: Annotated[str, Query()] = "rick",
+):
+    result = dict()
+    if q1:
+        result.update({"q": q1})
+    return result
