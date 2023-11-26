@@ -82,3 +82,21 @@ async def read_items8(
 async def read_items9(item_query: Annotated[str | None, Query(alias="item-query")] = None):
     """item-query ==> item_query"""
     return {"item_query": item_query}
+
+
+# Deprecating parameters
+@app.get("/items10/")
+async def read_item10(
+    item_query: Annotated[
+        str | None,
+        Query(
+            alias="item-query",
+            title="Query String ItemQuery",
+            description="Query string for the items",
+            min_length=3,
+            max_length=50,
+            deprecated=True,
+        ),
+    ] = None
+):
+    return {"item_query": item_query}
