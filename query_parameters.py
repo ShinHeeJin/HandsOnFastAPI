@@ -21,3 +21,12 @@ async def read_item2(item_id: str, q: str | None = None):
     if q is not None:
         return {"q": q}
     return {"item_id": item_id, "q": q}
+
+
+@app.get("/items3/{item_id}")
+async def read_item3(item_id: str, q: str | None = None, short: bool = False):
+    """
+    bool types converted
+    on, 1, True, true, yes -> True
+    """
+    return {"item_id": item_id, "short": short}
