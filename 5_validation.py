@@ -32,6 +32,8 @@ async def read_items3(
     result = dict()
     if q1:
         result.update({"q1": q1})
+    if q2:
+        result.update({"q2": q2})
     return result
 
 
@@ -52,5 +54,13 @@ async def read_items5(q: Annotated[str | None, Query(min_length=3, max_length=10
 
 # Required with Ellipsis ( explicitly declare )
 @app.get("/items6/")
-def read_items6(q: Annotated[str | None, Query(default=..., min_length=3)]):
+async def read_items6(q: Annotated[str | None, Query(default=...)]):
     return q
+
+
+# Query parameter list / multiple values
+# http://127.0.0.1:8000/items7/?q=apple&q=banan
+@app.get("/items7/")
+async def read_items7(q: Annotated[list[str] | None, Query()] = None):
+    """cf) you need to explicitly use Query, otherwise it would be interpreted as a request body."""
+    return {"q": q}
