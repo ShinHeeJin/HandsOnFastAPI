@@ -100,3 +100,14 @@ async def read_item10(
     ] = None
 ):
     return {"item_query": item_query}
+
+
+# Exclude from OpenAPI
+# http://127.0.0.1:8000/items11/?hidden-query=1234
+@app.get("/items11/")
+async def read_items11(
+    hidden_query: Annotated[str | None, Query(include_in_schema=False, alias="hidden-query")] = None
+):
+    if hidden_query:
+        return {"hidden_query": hidden_query}
+    return {}
