@@ -48,3 +48,9 @@ async def read_items4(q: Annotated[str | None, Query(min_length=3, max_length=50
 @app.get("/items5/")
 async def read_items5(q: Annotated[str | None, Query(min_length=3, max_length=10, pattern="^api_v\d+$")]):
     return q
+
+
+# Required with Ellipsis ( explicitly declare )
+@app.get("/items6/")
+def read_items6(q: Annotated[str | None, Query(default=..., min_length=3)]):
+    return q
