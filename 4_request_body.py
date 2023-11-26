@@ -13,14 +13,14 @@ app = FastAPI()
 
 
 # body data using Pydantic BaseModel
-@app.post("/items/")
-async def create_item(item: Item):
+@app.post("/items/{item_id}")
+async def create_item(item: Item, item_id: int):
     """
     Request json : {"name": "Foo","price": 45.3}
     Response json : {"name": "Foo","description": null,"price": 45.3,"tax": null}
     """
-    item_dict = item.model_dump()
-    print(f"item_dict : {item_dict}")
+    item_dict: dict = item.model_dump()
+    item_dict.update({"item_id": item_id})
     if item.tax:
         price = item.price + item.tax
         item_dict.update({"price_with_tax": price})
