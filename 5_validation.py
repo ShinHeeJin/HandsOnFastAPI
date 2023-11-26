@@ -75,3 +75,10 @@ async def read_items8(
     ] = None
 ):
     return {"q": q}
+
+
+# Alias parameters
+@app.get("/items9/")
+async def read_items9(item_query: Annotated[str | None, Query(alias="item-query")] = None):
+    """item-query ==> item_query"""
+    return {"item_query": item_query}
