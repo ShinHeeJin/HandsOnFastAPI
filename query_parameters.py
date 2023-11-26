@@ -44,3 +44,10 @@ async def read_user_item(item_id: str, user_id: int, q: str | None = None, short
         "q": q,
         "short": short,
     }
+
+
+# Required query parameters
+# cf) optional query param -> read_item4(needy:str = None)
+@app.get("/item")
+async def read_item4(needy: str):
+    return {"needy": needy}
