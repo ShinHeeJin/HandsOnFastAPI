@@ -61,3 +61,35 @@ async def create_user(user: UserIn) -> UserIn:
 @app.post("/user2/", response_model=UserOut)
 async def create_user2(user: UserIn) -> Any:
     return user
+
+
+class BaseUser(BaseModel):
+    username: str
+    email: EmailStr
+    full_name: str | None = None
+
+
+class UserIn(BaseUser):
+    password: str
+
+
+# Return Type and Data Filtering
+@app.post("/user3")
+async def create_user3(user: UserIn) -> BaseUser:
+    """
+    Request Samples
+    {
+        "username": "string",
+        "email": "user@example.com",
+        "full_name": "string",
+        "password": "string"
+    }
+
+    Response Samples
+    {
+        "username": "string",
+        "email": "user@example.com",
+        "full_name": "string"
+    }
+    """
+    return user
