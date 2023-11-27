@@ -81,3 +81,17 @@ async def create_offer(offer: Offer):
 @app.post("/images/multiple")
 async def create_multiple_images(images: list[Image]):
     return images
+
+
+# Bodies of arbitrary dicts
+@app.post("/index-weights/")
+async def create_index_weights(weights: dict[int, float]):
+    """
+    This would be useful if you want to receive keys that you don't already know
+    Another useful case is when you want to have keys of another type (e.g., int).
+    {
+        "1": 0.2,
+        "2": 0.3
+    }
+    """
+    return weights
