@@ -1,6 +1,7 @@
 from typing import Annotated
 
-from fastapi import FastAPI, Path
+from fastapi import FastAPI
+from fastapi.params import Body, Path
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -37,7 +38,7 @@ async def update_item(
 @app.put("/items2/{item_id}")
 async def update_item2(item_id: int, item: Item, user: User):  # required item & user
     """
-    Request Example
+    Request Body Example
     {
         "item": {
             "name": "Foo",
@@ -52,3 +53,28 @@ async def update_item2(item_id: int, item: Item, user: User):  # required item &
     }
     """
     return {"item_id": item_id, "item": item, "user": user}
+
+
+# Singular values in body
+@app.put("/items3/{item_id}")
+async def update_item3(item_id: int, item: Item, user: User, importance: Annotated[int, Body()]):
+    """
+    by default, singular values are interpreted as query parameters
+    you don't have to explicitly add a Query, you can just do:
+
+    Request Body Example
+    {
+        "item": {
+            "name": "Foo",
+            "description": "The pretender",
+            "price": 42.0,
+            "tax": 3.2
+        },
+        "user": {
+            "username": "dave",
+            "full_name": "Dave Grohl"
+        },
+        "importance": 5
+    }
+    """
+    return {"item_id": item_id, "item": item, "user": user, "importance": importance}
