@@ -21,6 +21,13 @@ class Item(BaseModel):
     images: list[Image] | None = None
 
 
+class Offer(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    items: list[Item]
+
+
 # Set types &  Nested Models
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
@@ -39,3 +46,32 @@ async def update_item(item_id: int, item: Item):
     }
     """
     return {"item_id": item_id, "item": item}
+
+
+# Deeply nested models
+@app.post("/offers/")
+async def create_offer(offer: Offer):
+    """
+    {
+        "name": "string",
+        "description": "string",
+        "price": 0,
+        "items": [
+            {
+            "name": "string",
+            "description": "string",
+            "price": 0,
+            "tax": 0,
+            "tags": [],
+            "images": [
+                {
+                "url": "http://example.com",
+                "name": "string"
+                }
+            ]
+            }
+        ]
+    }
+
+    """
+    return offer
