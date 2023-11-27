@@ -102,3 +102,15 @@ async def get_portal(teleport: bool = False) -> Response:
     if teleport:
         return RedirectResponse(url="http://127.0.0.1:8000/docs")
     return JSONResponse(content={"message": "Here's your interdimensional portal"})
+
+
+# Disable Response Model
+@app.get("/portal2", response_model=None)
+async def get_portal2(teleport: bool = False) -> Response | dict:
+    """
+    This will make FastAPI skip the response model generation
+    and that way you can have any return type annotations you need without it
+    """
+    if teleport:
+        return RedirectResponse(url="http://127.0.0.1:8000/docs")
+    return {"message": "Here's your interdimensional portal"}
