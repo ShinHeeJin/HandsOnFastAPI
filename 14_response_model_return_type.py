@@ -1,6 +1,7 @@
 from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
+from fastapi.responses import JSONResponse, RedirectResponse
 from pydantic import BaseModel, EmailStr
 
 app = FastAPI()
@@ -93,3 +94,11 @@ async def create_user3(user: UserIn) -> BaseUser:
     }
     """
     return user
+
+
+# Return a Response Directly
+@app.get("/portal")
+async def get_portal(teleport: bool = False) -> Response:
+    if teleport:
+        return RedirectResponse(url="http://127.0.0.1:8000/docs")
+    return JSONResponse(content={"message": "Here's your interdimensional portal"})
