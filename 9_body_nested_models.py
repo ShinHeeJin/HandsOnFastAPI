@@ -1,11 +1,12 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 
 app = FastAPI()
 
 
 class Image(BaseModel):
-    url: str
+    # The string will be checked to be a valid URL, and documented in JSON Schema / OpenAPI as such.
+    url: HttpUrl
     name: str
 
 
