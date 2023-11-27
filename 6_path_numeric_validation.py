@@ -15,3 +15,12 @@ async def read_items(
     if item_query:
         result |= {"item_query": item_query}
     return result
+
+
+# Number validations: greater than or equal, less than or equal
+@app.get("/items2/{item_id}")
+async def read_items2(item_id: Annotated[int, Path(title="The ID of the item", ge=1, le=999)], query: str):
+    result = {"item_id": item_id}
+    if query:
+        result |= {"query": query}
+    return result
