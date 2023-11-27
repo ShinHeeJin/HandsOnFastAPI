@@ -78,3 +78,20 @@ async def update_item3(item_id: int, item: Item, user: User, importance: Annotat
     }
     """
     return {"item_id": item_id, "item": item, "user": user, "importance": importance}
+
+
+# Embed a single body parameter
+@app.put("/items4/{item_id}")
+async def update_item4(item_id: int, item: Annotated[Item, Body(embed=True)]):
+    """
+    Request Body Example
+    {
+        "item": {
+            "name": "Foo",
+            "description": "The pretender",
+            "price": 42.0,
+            "tax": 3.2
+        }
+    }
+    """
+    return {"item_id": item_id, "item": item}
