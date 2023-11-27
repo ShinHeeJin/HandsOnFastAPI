@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from typing import Annotated
+
+from fastapi import Body, FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -23,6 +25,30 @@ class Item(BaseModel):
 
 
 # Extra JSON Schema data in Pydantic models
+# Body with multiple examples
 @app.put("/items/{item_id}")
-async def update_item(item_id: int, item: Item):
+async def update_item(
+    item_id: int,
+    item: Annotated[
+        Item,
+        Body(
+            examples=[
+                {
+                    "name": "Foo",
+                    "description": "A very nice Item",
+                    "price": 35.4,
+                    "tax": 3.2,
+                },
+                {
+                    "name": "Bar",
+                    "price": "35.4",
+                },
+                {
+                    "name": "Baz",
+                    "price": "thirty five point four",
+                },
+            ]
+        ),
+    ],
+):
     return {"item_id": item_id, "item": item}
