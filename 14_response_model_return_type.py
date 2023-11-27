@@ -114,3 +114,37 @@ async def get_portal2(teleport: bool = False) -> Response | dict:
     if teleport:
         return RedirectResponse(url="http://127.0.0.1:8000/docs")
     return {"message": "Here's your interdimensional portal"}
+
+
+class Item2(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float = 10.5
+    tags: list[str] = []
+
+
+@app.get("/items3/{item_id}", response_model=Item2, response_model_exclude_unset=True)
+async def read_items3(item_id: str):
+    """
+    response_model_exclude_unset = False
+    {
+        "name": "Foo",
+        "description": null,
+        "price": 50.2,
+        "tax": 10.5,
+        "tags": []
+    }
+
+    response_model_exclude_unset = True
+    {
+        "name": "Foo",
+        "price": 50.2
+    }
+    """
+    items = {
+        "foo": {"name": "Foo", "price": 50.2},
+        "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
+        "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+    }
+    return items[item_id]
