@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -25,3 +27,12 @@ async def read_items() -> list[Item]:
     2. Add a JSON Schema for the response, in the OpenAPI path operation
     """
     return [Item(name="Portal Gun", price=52.0), Item(name="Plumbus", price=32.0)]
+
+
+# response_model Parameter
+@app.get("/items2", response_model=list[Item])
+async def read_items2() -> Any:
+    return [
+        {"name": "Portal Gun", "price": 52.0},
+        {"name": "Plumbus", "price": 32.0},
+    ]
