@@ -18,7 +18,7 @@ class Item(BaseModel):
 
     # if you receive a request with duplicate data, it will be converted to a set of unique items.
     tags: set[str] = set()
-    image: Image | None = None
+    images: list[Image] | None = None
 
 
 # Set types &  Nested Models
