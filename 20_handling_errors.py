@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse, PlainTextResponse
 
 app = FastAPI()
 
@@ -32,3 +33,13 @@ async def read_unicorn(name: str):
     if name == "yolo":
         raise UnicornException(name=name)
     return {"unicorn_name": name}
+
+
+# Override the default exception handlers
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    """
+    When a request contains invalid data, FastAPI internally raises a RequestValidationError.
+    RequestValidationError is a sub-class of Pydantic's ValidationError.
+    """
+    return PlainTextResponse(str(exc), status_code=400)
