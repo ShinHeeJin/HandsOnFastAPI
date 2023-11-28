@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Dict, Union
 
 from fastapi import FastAPI
 from pydantic import BaseModel, EmailStr
@@ -71,3 +71,9 @@ items = {
 @app.get("/items/{item_id}", response_model=Union[PlaneItem, CarItem])
 async def read_item(item_id: str):
     return items[item_id]
+
+
+# Response with arbitrary dict
+@app.get("/keyword-weights/", response_model=Dict[str, float])
+async def read_keyword_weights():
+    return {"foo": 2.3, "bar": 3.4}
