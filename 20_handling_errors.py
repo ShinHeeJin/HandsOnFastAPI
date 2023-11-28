@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, PlainTextResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 app = FastAPI()
 
@@ -43,3 +44,18 @@ async def validation_exception_handler(request, exc):
     RequestValidationError is a sub-class of Pydantic's ValidationError.
     """
     return PlainTextResponse(str(exc), status_code=400)
+
+
+# Override the HTTPException error handler
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request, exc):
+    print(f"{request=}")  # <starlette.requests.Request object at 0x10cab0b90>
+    print(f"{exc=}")  # HTTPException(status_code=418, detail="Nope! I don't like 3.")
+    return PlainTextResponse(str(exc.detail), status_code=exc.status_code)
+
+
+@app.get("/items2/{item_id}")
+async def read_item2(item_id: int):
+    if item_id == 3:
+        raise HTTPException(status_code=418, detail="Nope! I don't like 3.")
+    return {"item_id": item_id}
