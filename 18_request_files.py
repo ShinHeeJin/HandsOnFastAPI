@@ -7,7 +7,7 @@ app = FastAPI()
 
 # Define File Parameters
 @app.post("/files/")
-async def create_file(file: Annotated[bytes, File()] = None):
+async def create_file(file: Annotated[bytes, File(description="A file read as bytes", title="Title")] = None):
     if not file:
         return {"message": "No file sent"}
     return {"file_size": len(file)}
@@ -15,7 +15,7 @@ async def create_file(file: Annotated[bytes, File()] = None):
 
 # File Parameters with UploadFile
 @app.post("/uploadfild/")
-async def create_upload_file(file: UploadFile = None):
+async def create_upload_file(file: Annotated[UploadFile, File(description="A file read as UploadFile")]):
     """
     ### 1. Using UploadFile has several advantages over bytes:
 
