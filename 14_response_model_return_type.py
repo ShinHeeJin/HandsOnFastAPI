@@ -46,8 +46,27 @@ async def read_items() -> list[Item]:
 # response_model Parameter
 @app.get("/items2", response_model=list[Item])
 async def read_items2() -> Any:
+    """
+    Response Example
+    [
+        {
+            "name": "Portal Gun",
+            "description": null,
+            "price": 52,
+            "tax": null,
+            "tags": []
+        },
+        {
+            "name": "Plumbus",
+            "description": null,
+            "price": 32,
+            "tax": null,
+            "tags": []
+        }
+    ]
+    """
     return [
-        {"name": "Portal Gun", "price": 52.0},
+        {"name": "Portal Gun", "price": 52.0, "dummy": 123},  # dummy ignored!
         {"name": "Plumbus", "price": 32.0},
     ]
 

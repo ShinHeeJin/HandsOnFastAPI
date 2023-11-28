@@ -37,5 +37,5 @@ async def read_items3(
     result = {"item_id": item_id}
     result = result | {"query": query}
     result |= {"size": size}
-    print
+    print(f"{result = }")
     return result

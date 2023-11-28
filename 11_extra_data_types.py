@@ -12,7 +12,7 @@ app = FastAPI()
 @app.get("/items/{item_id}")
 async def read_items(
     item_id: UUID,
-    start_datetime: Annotated[datetime | None, Body()] = None,
+    start_datetime: Annotated[datetime | None, Body(examples=["2023-12-30 12:12:12"])] = None,
     end_datetime: Annotated[datetime | None, Body()] = None,
     repeat_at: Annotated[time | None, Body()] = None,
     process_after: Annotated[timedelta | None, Body()] = None,

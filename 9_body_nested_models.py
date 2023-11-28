@@ -58,17 +58,17 @@ async def create_offer(offer: Offer):
         "price": 0,
         "items": [
             {
-            "name": "string",
-            "description": "string",
-            "price": 0,
-            "tax": 0,
-            "tags": [],
-            "images": [
-                {
-                "url": "http://example.com",
-                "name": "string"
-                }
-            ]
+                "name": "string",
+                "description": "string",
+                "price": 0,
+                "tax": 0,
+                "tags": [],
+                "images": [
+                    {
+                        "url": "http://example.com",
+                        "name": "string"
+                    }
+                ]
             }
         ]
     }
