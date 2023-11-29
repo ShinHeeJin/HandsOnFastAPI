@@ -12,5 +12,5 @@
     "editor.fontFamily": "D2Coding",
     "editor.rulers": [50, 72]
   },
-  "black-formatter.args": ["--line-length", "115"]
+  "black-formatter.args": ["--line-length", "100"]
 }
