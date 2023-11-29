@@ -22,3 +22,16 @@ async def read_items(commons: Annotated[dict, Depends(common_parameters)]):
 @app.get("/users/")
 async def read_users(commons: Annotated[dict, Depends(common_parameters)]):
     return commons
+
+
+async def my_parameters(q: str | None, skip: int = 0, me: int = 100):
+    return None
+
+
+MyDependecy = Annotated[dict, Depends(my_parameters)]
+
+
+@app.get("/me/")
+async def read_me(commons: MyDependecy):
+    assert commons is None
+    return commons
