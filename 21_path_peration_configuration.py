@@ -65,3 +65,8 @@ async def create_item(item: Item):
     - **tags**: a set of unique tag strings for this item
     """
     return item
+
+
+@app.get("/elements/", tags=["items"], deprecated=True)
+async def read_elements():
+    return [{"item_id": "Foo"}]
