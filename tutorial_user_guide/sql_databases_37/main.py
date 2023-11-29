@@ -1,3 +1,4 @@
+# https://fastapi.tiangolo.com/tutorial/sql-databases
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from tutorial_user_guide.sql_databases_37.database import engine, SessionLocal
@@ -10,6 +11,10 @@ app = FastAPI()
 
 # Dependency
 def get_db():
+    """
+    Our dependency will create a new SQLAlchemy SessionLocal that will be used in a single request, and then close it once the request is finished.
+    We make sure the database session is always closed after the request. Even if there was an exception while processing the request.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -19,6 +24,11 @@ def get_db():
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    """
+    We are creating the database session before each request in the dependency with yield, and then closing it afterwards.
+    And then we can create the required dependency in the path operation function, to get that session directly.
+    With that, we can just call crud.get_user directly from inside of the path operation function and use that session.
+    """
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
