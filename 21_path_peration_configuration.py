@@ -1,3 +1,5 @@
+from enum import Enum
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 
@@ -26,3 +28,19 @@ async def read_items():
 @app.get("/users/", tags=["users"])
 async def resd_users():
     return [{"username": "johndeo"}]
+
+
+class Tags(Enum):
+    items = "items"
+    users = "users"
+
+
+# Tags with Enums
+@app.get("/items2/", tags=[Tags.items])
+async def get_items():
+    return ["Portal gun", "Plumus"]
+
+
+@app.get("/users2/", tags=[Tags.users])
+async def get_users():
+    return ["Rick", "Morty"]
