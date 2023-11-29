@@ -1,7 +1,9 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, status
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, PlainTextResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -36,14 +38,24 @@ async def read_unicorn(name: str):
     return {"unicorn_name": name}
 
 
-# Override the default exception handlers
+# Override the default exception handlers, Use the RequestValidationError body
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc):
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
     """
     When a request contains invalid data, FastAPI internally raises a RequestValidationError.
     RequestValidationError is a sub-class of Pydantic's ValidationError.
     """
-    return PlainTextResponse(str(exc), status_code=400)
+    errors = exc.errors()
+    body = exc.body
+    print(
+        f"{errors=}"
+    )  # [{'type': 'int_parsing', 'loc': ('body', 'size'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': '12d3', 'url': 'https://errors.pydantic.dev/2.5/v/int_parsing'}]
+    print(f"{body=}")  # {'title': 'string', 'size': '12d3'}
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({"detail": errors, "body": body}),
+    )
+    # return PlainTextResponse(str(exc), status_code=400)
 
 
 # Override the HTTPException error handler
@@ -55,7 +67,17 @@ async def http_exception_handler(request, exc):
 
 
 @app.get("/items2/{item_id}")
-async def read_item2(item_id: int):
+async def read_item2(item_id: int, q: str):
     if item_id == 3:
         raise HTTPException(status_code=418, detail="Nope! I don't like 3.")
     return {"item_id": item_id}
+
+
+class Item(BaseModel):
+    title: str
+    size: int
+
+
+@app.post("/items3/")
+async def create_item(item: Item):
+    return item
