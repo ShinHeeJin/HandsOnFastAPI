@@ -17,6 +17,11 @@ class Item(ItemBase):
     owner_id: int
 
     class Config:
+        """
+        This Config class is used to provide configurations to Pydantic.
+        You will be able to return a database model and it will read the data from it.
+        """
+
         orm_mode = True
 
 
