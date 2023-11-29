@@ -30,6 +30,18 @@ class CommonQueryParams:
 # Classes as dependencies
 @app.get("/items/")
 async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryParams)]):
+    """
+    the first CommonQueryParams doesn't have any special meaning for FastAPI.
+    FastAPI won't use it for data conversion, validation, etc.
+    You could actually write just
+
+    ```python
+    commons: Annotated[Any, Depends(CommonQueryParams)]
+    ```
+
+    But declaring the type is encouraged as that way your editor will know what will be passed
+    as the parameter commons, and then it can help you with code completion, type checks, etc:
+    """
     response = {}
     if commons.q:
         response.update({"q": commons.q})
