@@ -51,6 +51,7 @@ async def get_users():
     "/items2/",
     response_model=Item,
     summary="Create and item",
+    response_description="The created item",
     tags=[Tags.items],
 )
 async def create_item(item: Item):
