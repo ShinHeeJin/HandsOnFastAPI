@@ -1,6 +1,6 @@
-# https://fastapi.tiangolo.com/tutorial/sql-databases/#create-the-pydantic-models
-
 from pydantic import BaseModel
+
+# https://fastapi.tiangolo.com/tutorial/sql-databases/#create-the-pydantic-models
 
 
 class ItemBase(BaseModel):
@@ -20,9 +20,13 @@ class Item(ItemBase):
         """
         This Config class is used to provide configurations to Pydantic.
         You will be able to return a database model and it will read the data from it.
+
+        UserWarning: Valid config keys have changed in V2:
+        * 'orm_mode' has been renamed to 'from_attributes'
         """
 
-        orm_mode = True
+        from_attributes = True
+        # orm_mode = True
 
 
 class UserBase(BaseModel):

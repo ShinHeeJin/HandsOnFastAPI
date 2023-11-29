@@ -1,8 +1,8 @@
-# https://fastapi.tiangolo.com/tutorial/sql-databases/#crud-utils
-
 from sqlalchemy.orm import Session
 
 from . import models, schemas
+
+# https://fastapi.tiangolo.com/tutorial/sql-databases/#crud-utils
 
 
 def get_user(db: Session, user_id: int):
@@ -34,6 +34,5 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db_item = models.Item(**item.model_dump(), owner_id=user_id)
     db.add(db_item)
     db.commit()
-    # refresh your instance (so that it contains any new data from the database, like the generated ID).
     db.refresh(db_item)
     return db_item
