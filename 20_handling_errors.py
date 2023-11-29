@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
+from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
 from fastapi.responses import JSONResponse, PlainTextResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from pydantic import BaseModel
@@ -38,7 +39,7 @@ async def read_unicorn(name: str):
     return {"unicorn_name": name}
 
 
-# Override the default exception handlers, Use the RequestValidationError body
+# Override the default exception handlers
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     """
@@ -60,7 +61,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 # Override the HTTPException error handler
 @app.exception_handler(StarletteHTTPException)
-async def http_exception_handler(request, exc):
+async def custom_http_exception_handler(request, exc):
     """
     FastAPI's HTTPException vs Starlette's HTTPException
     The only difference, is that FastAPI's HTTPException allows you to add headers to be included in the response.
@@ -83,6 +84,24 @@ class Item(BaseModel):
     size: int
 
 
+# Use the RequestValidationError body
 @app.post("/items3/")
 async def create_item(item: Item):
     return item
+
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request, exc):
+    print(f"OMG! An HTTP error!: {repr(exc)}")
+    return await http_exception_handler(request, exc)
+
+
+# Re-use FastAPI's exception handlers
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    """
+    If you want to use the exception along with the same default exception handlers from FastAPI
+    You can import and re-use the default exception handlers from fastapi.exception_handlers
+    """
+    print(f"OMG! The client sent invalid data!: {exc}")
+    return await request_validation_exception_handler(request, exc)
