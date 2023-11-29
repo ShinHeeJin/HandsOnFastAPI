@@ -46,4 +46,18 @@ async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryPa
     if commons.q:
         response.update({"q": commons.q})
     response.update({"items": fake_items_db[commons.skip : commons.skip + commons.limit]})
-    return None
+    return response
+
+
+# Shortcut
+@app.get("/items")
+async def read_items2(commons: Annotated[CommonQueryParams, Depends()]):
+    """
+    You declare the dependency as the type of the parameter, and you use Depends() without any parameter,
+    instead of having to write the full class again inside of Depends(CommonQueryParams).
+    """
+    response = {}
+    if commons.q:
+        response.update({"q": commons.q})
+    response.update({"items": fake_items_db[commons.skip : commons.skip + commons.limit]})
+    return response
