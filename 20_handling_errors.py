@@ -61,6 +61,11 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 # Override the HTTPException error handler
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request, exc):
+    """
+    FastAPI's HTTPException vs Starlette's HTTPException
+    The only difference, is that FastAPI's HTTPException allows you to add headers to be included in the response.
+    This is needed/used internally for OAuth 2.0 and some security utilities.
+    """
     print(f"{request=}")  # <starlette.requests.Request object at 0x10cab0b90>
     print(f"{exc=}")  # HTTPException(status_code=418, detail="Nope! I don't like 3.")
     return PlainTextResponse(str(exc.detail), status_code=exc.status_code)
