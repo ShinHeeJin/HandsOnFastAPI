@@ -38,7 +38,7 @@ async def generate_dep(name):
     return DBSession(name)
 
 
-def dependency_a():
+async def dependency_a():
     print("dependency_a")
     dep_a = generate_dep("a")
     try:
@@ -49,7 +49,7 @@ def dependency_a():
         dep_a.close()
 
 
-def dependency_b(dep_a: Annotated[DBSession, Depends(dependency_a)]):
+async def dependency_b(dep_a: Annotated[DBSession, Depends(dependency_a)]):
     print("dependency_b")
     dep_b = generate_dep("b")
     try:
@@ -60,7 +60,10 @@ def dependency_b(dep_a: Annotated[DBSession, Depends(dependency_a)]):
         dep_b.close()
 
 
-def dependency_c(dep_b: Annotated[DBSession, Depends(dependency_b)]):
+async def dependency_c(dep_b: Annotated[DBSession, Depends(dependency_b)]):
+    """
+    It might be tempting to raise an HTTPException or similar in the exit code, after the yield. But it won't work.
+    """
     print("dependency_c")
     dep_c = generate_dep("c")
     try:
@@ -90,6 +93,5 @@ async def dependency_test(dep_c: Annotated[str, Depends(dependency_c)]):
     b close
     a close
     """
-    print(dir(dep_c))
     print(f"{dep_c=}")
     return None
