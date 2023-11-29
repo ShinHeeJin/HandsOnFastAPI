@@ -1,10 +1,13 @@
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.encoders import jsonable_encoder
+from fastapi.exception_handlers import (
+    http_exception_handler,
+    request_validation_exception_handler,
+)
 from fastapi.exceptions import RequestValidationError
-from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
 from fastapi.responses import JSONResponse, PlainTextResponse
-from starlette.exceptions import HTTPException as StarletteHTTPException
 from pydantic import BaseModel
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 app = FastAPI()
 
@@ -18,7 +21,9 @@ class UnicornException(Exception):
 
 @app.exception_handler(UnicornException)
 async def unicorn_exception_handler(request: Request, exc: UnicornException):
-    return JSONResponse(status_code=418, content={"message": f"Opps! {exc.name} did something"})
+    return JSONResponse(
+        status_code=status.HTTP_418_IM_A_TEAPOT, content={"message": f"Opps! {exc.name} did something"}
+    )
 
 
 # Use HTTPException & Add custom headers
@@ -26,7 +31,9 @@ async def unicorn_exception_handler(request: Request, exc: UnicornException):
 async def read_item(item_id: str):
     if item_id not in items:
         raise HTTPException(
-            status_code=404, detail={"message": "Item not found"}, headers={"X-Error": "There goes my error"}
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"message": "Item not found"},
+            headers={"X-Error": "There goes my error"},
         )
     return {"item": items[item_id]}
 
@@ -75,7 +82,7 @@ async def custom_http_exception_handler(request, exc):
 @app.get("/items2/{item_id}")
 async def read_item2(item_id: int, q: str):
     if item_id == 3:
-        raise HTTPException(status_code=418, detail="Nope! I don't like 3.")
+        raise HTTPException(status_code=status.HTTP_418_IM_A_TEAPOT, detail="Nope! I don't like 3.")
     return {"item_id": item_id}
 
 

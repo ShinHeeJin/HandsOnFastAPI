@@ -28,10 +28,15 @@ async def my_parameters(q: str | None, skip: int = 0, me: int = 100):
     return None
 
 
+# Share Annotated dependencies
 MyDependecy = Annotated[dict, Depends(my_parameters)]
 
 
 @app.get("/me/")
 async def read_me(commons: MyDependecy):
+    """
+    And you can declare dependencies with async def inside of normal def path operation functions,
+    or def dependencies inside of async def path operation functions, etc.
+    """
     assert commons is None
     return commons
