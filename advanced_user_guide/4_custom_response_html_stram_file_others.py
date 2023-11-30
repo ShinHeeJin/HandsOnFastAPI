@@ -1,5 +1,8 @@
 # https://fastapi.tiangolo.com/advanced/custom-response/#use-orjsonresponse
-from fastapi import FastAPI
+from typing import Any
+
+import orjson
+from fastapi import FastAPI, Response
 from fastapi.responses import (
     FileResponse,
     HTMLResponse,
@@ -165,3 +168,16 @@ async def file3():
         server: uvicorn
     """
     return "./data/test.mp4"
+
+
+class CustomORJSONResponse(Response):
+    media_type = "application/json"
+
+    def render(self, content: Any) -> bytes:
+        assert orjson is not None, "orjson must be installed"
+        return orjson.dumps(content, option=orjson.OPT_INDENT_2)
+
+
+@app.get("/custom-response", response_class=CustomORJSONResponse)
+async def custom_response():
+    return {"message": "Hello World"}
