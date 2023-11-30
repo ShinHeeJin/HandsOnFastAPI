@@ -40,3 +40,22 @@ async def read_items2():
         </body>
     </html>
     """
+
+
+# you can also override the response directly in your path operation
+@app.get("/items3/")
+async def read_items3():
+    """
+    A Response returned directly by your path operation function won't be documented in OpenAPI
+    """
+    html_content = """
+    <html>
+        <head>
+            <title>Some HTML in here</title>
+        </head>
+        <body>
+            <h1>Look ma! HTML!</h1>
+        </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content, status_code=200)
