@@ -17,6 +17,9 @@ def create_cookie(response: Response):
 # Return a Response directly
 @app.post("/cookie")
 def create_cookie2():
+    """
+    https://www.starlette.io/responses/#set-cookie
+    """
     content = {"message": "Come to the dark side, we have cookies"}
     response = JSONResponse(content=content)
     response.set_cookie(
