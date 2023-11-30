@@ -1,6 +1,7 @@
 # https://fastapi.tiangolo.com/advanced/custom-response/#use-orjsonresponse
 from fastapi import FastAPI
 from fastapi.responses import (
+    FileResponse,
     HTMLResponse,
     ORJSONResponse,
     RedirectResponse,
@@ -128,3 +129,39 @@ def file():
             yield from file_like
 
     return StreamingResponse(iter_file("./data/test.mp4"), media_type="video/mp4")
+
+
+# FileResponse
+@app.get("/file2")
+async def file2():
+    """
+    Response Header
+        content-disposition: attachment; filename="testttt.mp4"
+        content-length: 316731
+        content-type: video/mp4
+        custom-header: test
+        date: Thu,30 Nov 2023 14:32:07 GMT
+        etag: 0d53983dfcd4308cc1d46c987435c4c9
+        last-modified: Thu,30 Nov 2023 14:17:42 GMT
+        server: uvicorn
+    """
+    return FileResponse(
+        path="./data/test.mp4",
+        headers={"Custom-Header": "test"},
+        media_type="video/mp4",
+        filename="testttt.mp4",
+    )
+
+
+@app.get("/file3", response_class=FileResponse)
+async def file3():
+    """
+    Response Header
+        content-length: 316731
+        content-type: video/mp4
+        date: Thu,30 Nov 2023 14:31:52 GMT
+        etag: 0d53983dfcd4308cc1d46c987435c4c9
+        last-modified: Thu,30 Nov 2023 14:17:42 GMT
+        server: uvicorn
+    """
+    return "./data/test.mp4"
