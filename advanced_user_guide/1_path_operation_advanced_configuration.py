@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+import yaml
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.routing import APIRoute
+from pydantic import BaseModel, ValidationError
 
 app = FastAPI()
 
@@ -33,6 +35,38 @@ async def create_item(item_id: int):
 @app.get("/items4/", openapi_extra={"x-aperture-labs-portal": "red"})
 async def read_items3():
     return [{"item_id": "portal-gun"}]
+
+
+class Item(BaseModel):
+    name: str
+    tags: list[str]
+
+
+# Custom OpenAPI content type
+@app.post(
+    "/items2/",
+    openapi_extra={
+        "requestBody": {
+            "content": {"application/x-yaml": {"schema": Item.model_json_schema()}},
+            "required": True,
+        }
+    },
+)
+async def create_item2(request: Request):
+    raw_body: bytes = await request.body()
+    # raw_body=b'name: string\ntags:\n  - string'
+    try:
+        data = yaml.safe_load(raw_body)
+        # data={'name': 'string', 'tags': ['string']}
+    except yaml.YAMLError:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Ivalid YAML")
+
+    try:
+        item = Item.model_validate(data)
+        # item = Item(name='string', tags=['string'])
+    except ValidationError as e:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=e.errors())
+    return item
 
 
 def use_route_names_as_operation_ids(app: FastAPI) -> None:
