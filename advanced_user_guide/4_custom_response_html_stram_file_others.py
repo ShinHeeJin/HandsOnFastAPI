@@ -1,6 +1,11 @@
 # https://fastapi.tiangolo.com/advanced/custom-response/#use-orjsonresponse
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse, ORJSONResponse, RedirectResponse
+from fastapi.responses import (
+    HTMLResponse,
+    ORJSONResponse,
+    RedirectResponse,
+    StreamingResponse,
+)
 
 """
 For large responses, returning a Response directly is much faster than returning a dictionary.
@@ -90,3 +95,36 @@ async def redirect_typer():
 @app.get("/typer2", response_class=RedirectResponse, status_code=302)
 async def redirect_typer2():
     return "http://localhost:8000/docs"
+
+
+async def fake_video_streamer():
+    for i in range(50):
+        yield b"some fake video bytes"
+
+
+# StreamingResponse
+@app.get("/video")
+async def main():
+    return StreamingResponse(fake_video_streamer())
+
+
+@app.get("/file")
+def file():
+    """
+    Response Header
+        content-type: video/mp4
+        date: Thu,30 Nov 2023 14:18:52 GMT
+        server: uvicorn
+        transfer-encoding: chunked
+    """
+
+    def iter_file(path):
+        with open(path, mode="rb") as file_like:
+            """
+            This yield from tells the function to iterate over that thing named file_like. And then, for each part iterated, yield that part as coming from this generator function.
+            So, it is a generator function that transfers the "generating" work to something else internally.
+            By doing it this way, we can put it in a with block, and that way, ensure that it is closed after finishing.
+            """
+            yield from file_like
+
+    return StreamingResponse(iter_file("./data/test.mp4"), media_type="video/mp4")
