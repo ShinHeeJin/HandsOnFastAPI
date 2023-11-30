@@ -14,6 +14,22 @@ async def read_items2():
     return [{"item_id": "Foo"}]
 
 
+@app.post("/items3/{item_id}", summary="Create an item")
+async def create_item(item_id: int):
+    """
+    Create an item with all the information:
+
+    - **name**: each item must have a name
+    - **description**: a long description
+    - **price**: required
+    - **tax**: if the item doesn't have tax, you can omit this
+    - **tags**: a set of unique tag strings for this item
+    \f
+    :param item_id: Item Id ( User input )
+    """
+    return {}
+
+
 def use_route_names_as_operation_ids(app: FastAPI) -> None:
     """
     Simplify operation IDs so that generated API clients have simpler function
