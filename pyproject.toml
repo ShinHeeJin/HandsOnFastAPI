@@ -22,4 +22,3 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-remove_unused_imports = false
