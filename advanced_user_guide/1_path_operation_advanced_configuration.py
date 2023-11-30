@@ -9,6 +9,11 @@ async def read_items():
     return [{"item_id": "Foo"}]
 
 
+@app.get("/items2/", include_in_schema=False)
+async def read_items2():
+    return [{"item_id": "Foo"}]
+
+
 def use_route_names_as_operation_ids(app: FastAPI) -> None:
     """
     Simplify operation IDs so that generated API clients have simpler function
@@ -17,6 +22,7 @@ def use_route_names_as_operation_ids(app: FastAPI) -> None:
     Should be called only after all routes have been added.
     """
     for route in app.routes:
+        print(route)
         """
         route
         Route(path='/openapi.json', name='openapi', methods=['GET', 'HEAD'])
