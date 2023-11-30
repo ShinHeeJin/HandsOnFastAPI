@@ -30,6 +30,11 @@ async def create_item(item_id: int):
     return {}
 
 
+@app.get("/items4/", openapi_extra={"x-aperture-labs-portal": "red"})
+async def read_items3():
+    return [{"item_id": "portal-gun"}]
+
+
 def use_route_names_as_operation_ids(app: FastAPI) -> None:
     """
     Simplify operation IDs so that generated API clients have simpler function
