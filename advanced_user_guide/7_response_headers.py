@@ -38,6 +38,11 @@ async def get_headers(response: Response):
     },
 )
 def get_headers2():
+    """
+    But if you have custom headers that you want a client in a browser to be able to see,
+    you need to add them to your CORS configurations (read more in CORS (Cross-Origin Resource Sharing)),
+    using the parameter expose_headers documented in Starlette's CORS docs.
+    """
     content = {"message": "Hello world"}
     headers = {"X-Cat-Dog": "alone in the world", "Content-Language": "en-US"}
     return JSONResponse(content=content, headers=headers)
