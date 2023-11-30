@@ -49,6 +49,8 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata,
     openapi_url="/api/v1/openapi.json",
+    docs_url="/docs",
+    redoc_url="/redoc",
 )
 
 
