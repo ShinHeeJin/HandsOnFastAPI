@@ -22,7 +22,8 @@ orjson is a fast, correct JSON library for Python.
 It benchmarks as the fastest Python library for JSON and is more correct than the standard json library or other third-party libraries.
 It serializes dataclass, datetime, numpy, and UUID instances natively.
 """
-app = FastAPI()
+# Default response class
+app = FastAPI(default_response_class=ORJSONResponse)
 
 
 # Use ORJSONResponse
