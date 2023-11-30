@@ -1,3 +1,4 @@
+# https://fastapi.tiangolo.com/advanced/additional-responses/
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
@@ -42,7 +43,7 @@ async def read_item2(item_id: str, img: bool | None = None):
 
 # Combining information
 @app.get(
-    "/itemsd/{item_id}",
+    "/items3/{item_id}",
     response_model=Item,
     responses={
         404: {"model": Message, "description": "The item was not found"},
@@ -56,3 +57,22 @@ async def read_item3(item_id: str):
     if item_id == "foo":
         return {"id": "foo", "value": "there goes my hero"}
     return JSONResponse(status_code=404, content={"message": "Item not found"})
+
+
+# Combine predefined responses and custom ones
+responses = {
+    404: {"description": "Item not found"},
+    302: {"description": "The item was moved"},
+    403: {"description": "Not enough privileges"},
+}
+
+
+@app.get(
+    "/items4/{item_id}",
+    response_model=Item,
+    responses={**responses, 200: {"content": {"image/png"}}},
+)
+async def read_item4(item_id: str, img: bool | None = None):
+    if img:
+        return FileResponse("image.png", media_type="image/png")
+    return {"id": item_id, "value": "there goes my hero"}
