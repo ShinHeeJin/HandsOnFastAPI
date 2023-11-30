@@ -48,6 +48,7 @@ app = FastAPI(
         "identifier": "MIT",
     },
     openapi_tags=tags_metadata,
+    openapi_url="/api/v1/openapi.json",
 )
 
 
