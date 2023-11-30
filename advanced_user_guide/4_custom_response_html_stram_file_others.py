@@ -1,6 +1,6 @@
 # https://fastapi.tiangolo.com/advanced/custom-response/#use-orjsonresponse
 from fastapi import FastAPI
-from fastapi.responses import ORJSONResponse
+from fastapi.responses import HTMLResponse, ORJSONResponse
 
 """
 For large responses, returning a Response directly is much faster than returning a dictionary.
@@ -20,3 +20,23 @@ app = FastAPI()
 @app.get("/items/", response_class=ORJSONResponse)
 async def read_items():
     return ORJSONResponse([{"item_id": "Foo"}])
+
+
+# HTML Response
+@app.get("/items2/", response_class=HTMLResponse)
+async def read_items2():
+    """
+    The parameter response_class will also be used to define the "media type" of the response.
+    In this case, the HTTP header Content-Type will be set to text/html.
+    And it will be documented as such in OpenAPI.
+    """
+    return """
+    <html>
+        <head>
+            <title>Some HTML in here</title>
+        </head>
+        <body>
+            <h1>Look ma! HTML!</h1>
+        </body>
+    </html>
+    """
