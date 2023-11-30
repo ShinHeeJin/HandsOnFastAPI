@@ -77,7 +77,6 @@ def use_route_names_as_operation_ids(app: FastAPI) -> None:
     Should be called only after all routes have been added.
     """
     for route in app.routes:
-        print(route)
         """
         route
         Route(path='/openapi.json', name='openapi', methods=['GET', 'HEAD'])
