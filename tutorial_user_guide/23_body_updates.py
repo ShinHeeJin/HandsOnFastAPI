@@ -1,11 +1,6 @@
-from typing import Annotated
-
-from fastapi import Body, FastAPI, File, Form, HTTPException, Path, Query, Request, status, UploadFile
+from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError
-from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
-from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 app = FastAPI()
 
