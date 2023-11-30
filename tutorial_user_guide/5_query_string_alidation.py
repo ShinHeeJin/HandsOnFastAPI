@@ -7,7 +7,7 @@ app = FastAPI()
 
 # Annotated
 @app.get("/items/")
-async def read_items(q: Annotated[str | None, Query(max_length=50)] = None):
+async def read_items(q: Annotated[str | None, Query(max_length=50)] = None):  # q : optional
     result = dict()
     if q:
         result.update({"q": q})
@@ -16,7 +16,7 @@ async def read_items(q: Annotated[str | None, Query(max_length=50)] = None):
 
 # without Annotated
 @app.get("/items2/")
-async def read_items2(q: str | None = Query(default=None, max_length=50)):
+async def read_items2(q: str | None = Query(default=None, max_length=50)):  # q : optional
     result = dict()
     if q:
         result.update({"q": q})
@@ -48,7 +48,9 @@ async def read_items4(q: Annotated[str | None, Query(min_length=3, max_length=50
 
 # Add regular expressions
 @app.get("/items5/")
-async def read_items5(q: Annotated[str | None, Query(min_length=3, max_length=10, pattern="^api_v\d+$")]):
+async def read_items5(
+    q: Annotated[str | None, Query(min_length=3, max_length=10, pattern="^api_v\d+$")]
+):
     return q
 
 
@@ -71,7 +73,11 @@ async def read_items7(q: Annotated[list[str] | None, Query()] = ["banana", "appl
 async def read_items8(
     q: Annotated[
         str | None,
-        Query(title="Query String!", description="Query String for the items to saerch in data db", min_length=3),
+        Query(
+            title="Query String!",
+            description="Query String for the items to saerch in data db",
+            min_length=3,
+        ),
     ] = None
 ):
     return {"q": q}

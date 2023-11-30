@@ -17,8 +17,10 @@ async def read_items(
     repeat_at: Annotated[time | None, Body()] = None,
     process_after: Annotated[timedelta | None, Body()] = None,
 ):
-    start_process = start_datetime + process_after
-    duration = end_datetime - start_process
+    start_process, duration = None, None
+    if start_datetime and process_after:
+        start_process = start_datetime + process_after
+        duration = end_datetime - start_process
     return {
         "item_id": item_id,
         "start_datetime": start_datetime,

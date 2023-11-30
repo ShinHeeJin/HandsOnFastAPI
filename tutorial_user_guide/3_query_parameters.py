@@ -5,7 +5,7 @@ app = FastAPI()
 
 # Query Parameters
 @app.get("/items/")
-async def read_item(skip: int = 0, limit: int = 10):
+async def read_item(skip: int = 0, limit: int = 10):  # * skip, limit -> optional
     """
     Request: http://127.0.0.1:8000/items/?skip=1&limit=4
     Response: [1, 4]
@@ -56,4 +56,9 @@ async def read_item4(needy: str):
 # parameters as required, some as having a default value
 @app.get("/items5/{item_id}")
 async def read_item5(item_id: str, needy: str, skip: int = 0, limit: int | None = None):
+    """
+    - needy : required
+    - skip : optional
+    - limit : optional
+    """
     return {"item_id": item_id, "needy": needy, "skip": skip, "limit": limit}

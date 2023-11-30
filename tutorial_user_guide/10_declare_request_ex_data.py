@@ -35,7 +35,7 @@ async def update_item(
         Body(
             examples=[
                 {
-                    "name": "Foo",
+                    "name": "Foo1",
                     "description": "A very nice Item",
                     "price": 35.4,
                     "tax": 3.2,
@@ -54,7 +54,7 @@ async def update_item(
                     "summary": "A normal example",
                     "description": "A **normal** item works correctly.",
                     "value": {
-                        "name": "Foo",
+                        "name": "Foo2",
                         "description": "A very nice Item",
                         "price": 35.4,
                         "tax": 3.2,
