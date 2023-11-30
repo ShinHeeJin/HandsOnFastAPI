@@ -1,6 +1,6 @@
 # https://fastapi.tiangolo.com/advanced/custom-response/#use-orjsonresponse
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse, ORJSONResponse
+from fastapi.responses import HTMLResponse, ORJSONResponse, RedirectResponse
 
 """
 For large responses, returning a Response directly is much faster than returning a dictionary.
@@ -75,3 +75,12 @@ async def read_items4():
     </html>
     """
     return HTMLResponse(content=html_content, status_code=200)
+
+
+# RedirectResponse
+@app.get("/typer")
+async def redirect_typer():
+    """
+    Returns an HTTP redirect. Uses a 307 status code (Temporary Redirect) by default.
+    """
+    return RedirectResponse("https://typer.tiangolo.com")
