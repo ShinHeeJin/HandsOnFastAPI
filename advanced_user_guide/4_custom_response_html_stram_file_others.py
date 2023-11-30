@@ -83,4 +83,10 @@ async def redirect_typer():
     """
     Returns an HTTP redirect. Uses a 307 status code (Temporary Redirect) by default.
     """
-    return RedirectResponse("https://typer.tiangolo.com")
+    return RedirectResponse("http://localhost:8000/docs")
+
+
+# RedirectResponse2
+@app.get("/typer2", response_class=RedirectResponse, status_code=302)
+async def redirect_typer2():
+    return "http://localhost:8000/docs"
