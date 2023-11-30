@@ -38,3 +38,21 @@ async def read_item2(item_id: str, img: bool | None = None):
     if img:
         return FileResponse("image.png", media_type="image/png")
     return {"id": item_id, "value": "there goes ym hero"}
+
+
+# Combining information
+@app.get(
+    "/itemsd/{item_id}",
+    response_model=Item,
+    responses={
+        404: {"model": Message, "description": "The item was not found"},
+        200: {
+            "description": "Item requested by ID",
+            "content": {"application/json": {"example": {"id": "bar", "value": "The bar tenders"}}},
+        },
+    },
+)
+async def read_item3(item_id: str):
+    if item_id == "foo":
+        return {"id": "foo", "value": "there goes my hero"}
+    return JSONResponse(status_code=404, content={"message": "Item not found"})
