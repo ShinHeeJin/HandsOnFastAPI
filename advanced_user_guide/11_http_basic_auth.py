@@ -39,4 +39,23 @@ def get_current_username(credentials: Annotated[HTTPBasicCredentials, Depends(se
 
 @app.get("/users2/me")
 def read_current_user2(username: Annotated[str, Depends(get_current_username)]):
+    """
+    Request Headers
+        Authorization: Basic c3RhbmxleWpvYnNvbjpzd29yZGZpc2g=
+        User-Agent: PostmanRuntime/7.32.1
+        Accept: */*
+        Cache-Control: no-cache
+        Postman-Token: 671908fd-89bc-47d3-a30b-97b6d2b896a4
+        Host: 127.0.0.1:8000
+        Accept-Encoding: gzip, deflate, br
+        Connection: keep-alive
+
+    Response Headers
+        date: Fri, 01 Dec 2023 08:47:10 GMT
+        server: uvicorn
+        content-length: 28
+        content-type: application/json
+    Response Body
+        {"username":"stanleyjobson"}
+    """
     return {"username": username}
