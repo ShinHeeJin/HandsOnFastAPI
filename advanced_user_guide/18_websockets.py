@@ -6,6 +6,7 @@ from fastapi import (
     FastAPI,
     Query,
     WebSocket,
+    WebSocketDisconnect,
     WebSocketException,
     status,
 )
@@ -52,3 +53,43 @@ async def websocket_endpoint2(
             await websocket.send_text(f"Query p is : {q}")
 
         await websocket.send_text(f"Message text was: {data}, for item ID: {item_id}")
+
+
+# Handling disconnections and multiple clients
+class ConnectionManager:
+    def __init__(self) -> None:
+        self.avtive_connections: list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.avtive_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        self.avtive_connections.remove(websocket)
+
+    async def send_personal_message(self, message: str, websocket: WebSocket):
+        await websocket.send_text(message)
+
+    async def broadcast(self, message: str):
+        for connection in self.avtive_connections:
+            await connection.send_text(message)
+
+
+manager = ConnectionManager()
+
+
+@app.websocket("/ws/{client_id}")
+async def websocket_endpoint3(websocket: WebSocket, client_id: int):
+    """
+    When a WebSocket connection is closed, the await websocket.receive_text() will raise a WebSocketDisconnect exception
+    which you can then catch and handle like in this example.
+    """
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.send_personal_message(f"You wrote: {data}", websocket)
+            await manager.broadcast(f"Client #{client_id} says: {data}")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        await manager.broadcast(f"Client #{client_id} left the chat")
