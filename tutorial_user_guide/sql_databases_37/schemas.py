@@ -43,4 +43,4 @@ class User(UserBase):
     items: list[Item] = []
 
     class Config:
-        orm_model = True
+        from_attributes = True
