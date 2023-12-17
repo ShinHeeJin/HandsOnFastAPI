@@ -93,3 +93,12 @@ TLS 인증은 IP가 아닌 도메인과 연관되어있다는 점에 유의하�
     - when the program loads things in memory, for example, a machine learning model in a variable, <u>And multiple processes normally don't share any memory.</u> This means that each running process has its own things, variables, and memory. And if you are consuming a large amount of memory in your code, each process will consume an equivalent amount of memory.
     - <u>If your code loads a ML model with 1GB in size and start 4 processes, your API will consume 4GB of RAM</u>
 
+## Examples of Replication Tool and Strategies
+- Gunicorn managing Uvicorn workers
+    - Gunicorn would be the process manager listening on the IP and port, the replication would be by having multiple Uvicorn worker processes
+- Uvicorn managing Uvicorn workers
+    - One Uvicorn process manager would listen on the IP and port, and it would start multiple Uvicorn worker processes
+- Kubernetes and other distributed container systems
+    - Something in the Kubernetes layer would listen on the IP and port. The replication would be by having multiple containers, each with one Uvicorn process running
+- Cloud services that handle this for you
+    - The cloud service will probably handle replication for you. It would possibly let you define a process to run, or a container image to use, in any case, it would most probably be a single Uvicorn process, and the cloud service would be in charge of replicating it.
