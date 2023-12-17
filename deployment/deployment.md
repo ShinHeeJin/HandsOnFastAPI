@@ -84,3 +84,12 @@ TLS 인증은 IP가 아닌 도메인과 연관되어있다는 점에 유의하�
     - Systemd, Supervisor
     - Handled internally by a cloud provider as part of their services
     - Others...
+
+## Replication - Processes and Memory
+- Multiple Processes - Workers
+    - you could have multiple processes running with the same application at the same time, and distribute all the requests among them.
+    - So, to be able to have multiple processes at the same time, there has to be a single process listening on a port that then transmits the communication to each worker process in some way.
+- Memory per Process
+    - when the program loads things in memory, for example, a machine learning model in a variable, <u>And multiple processes normally don't share any memory.</u> This means that each running process has its own things, variables, and memory. And if you are consuming a large amount of memory in your code, each process will consume an equivalent amount of memory.
+    - <u>If your code loads a ML model with 1GB in size and start 4 processes, your API will consume 4GB of RAM</u>
+
