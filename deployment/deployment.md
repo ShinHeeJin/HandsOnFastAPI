@@ -75,3 +75,12 @@ TLS 인증은 IP가 아닌 도메인과 연관되어있다는 점에 유의하�
 - Supervisor
 - Handled internally by a cloud provider as part of their services
 - others...
+
+## Restart After Crash
+- there might be cases where we write some code that crashes the entire application making Uvicorn and Python crash
+- But in those cases with really bad errors that crash the running process, you would want an external component that is in charge of restarting the process, at least a couple of times...
+- Example Tools to Restart Automatically
+    - Docker, Kubernetes, Docker Compose, Docker in Swarm Mode
+    - Systemd, Supervisor
+    - Handled internally by a cloud provider as part of their services
+    - Others...
