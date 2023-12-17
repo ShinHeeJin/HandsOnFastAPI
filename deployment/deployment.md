@@ -67,3 +67,11 @@ TLS 인증은 IP가 아닌 도메인과 연관되어있다는 점에 유의하�
 - HAProxy : 외부 프로세스 ( ex. Certbot )에 의한 인증서 갱신
 - Kubernetes with an Ingress Controller like Nginx : 외부 프로세스(ex. cert-manager)에 의한 인증서 갱신
 - Handled internally by a cloud provider as part of their services (read below 👇)
+
+## Example Tools to Run at Startup
+- Docker, K8S, DockerCompose
+- Docker in Swarm Mode
+- Systemd
+- Supervisor
+- Handled internally by a cloud provider as part of their services
+- others...
