@@ -39,3 +39,19 @@
 ![Alt text](image.png)
 
 TLS 인증은 IP가 아닌 도메인과 연관되어있다는 점에 유의하세요.
+
+# [3. Run a Server Manually - Uvicorn](https://fastapi.tiangolo.com/de/deployment/manually/)
+- ASGI의 3가지 대안이 있습니다.<br/>
+  1. [Uvicorn](https://www.uvicorn.org/): a high performance ASGI server.
+        ```
+        $ pip install "uvicorn[standard]" # asyncio 대신 uvloop이 설치됩니다.
+        $ uvicorn main:app --host 0.0.0.0 --port 80
+        ```
+  2. [Hypercorn](https://pgjones.gitlab.io/hypercorn/): an ASGI server compatible with HTTP/2 and Trio among other features.<br/>
+        `Starlette`과 `FastAPI`는 python asyncio와 trio와 호환되는 `AnyIO`를 기반으로 한다.
+        ```
+        $ pip install "hypercorn[trio]"
+        $ hypercorn main:app --worker-class trio # Trio 백엔드로 app을 구동
+        ```
+  3. [Daphne](https://github.com/django/daphne): the ASGI server built for Django Channels.
+  
