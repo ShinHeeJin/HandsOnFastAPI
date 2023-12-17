@@ -102,3 +102,12 @@ TLS 인증은 IP가 아닌 도메인과 연관되어있다는 점에 유의하�
     - Something in the Kubernetes layer would listen on the IP and port. The replication would be by having multiple containers, each with one Uvicorn process running
 - Cloud services that handle this for you
     - The cloud service will probably handle replication for you. It would possibly let you define a process to run, or a container image to use, in any case, it would most probably be a single Uvicorn process, and the cloud service would be in charge of replicating it.
+
+## Previous Steps Before Starting
+- For example, you might want to run database migrations.
+- If you start multiple processes for the application itself, they could cause conflicts with each other.
+- Of course, there are some cases where there's no problem in running the previous steps multiple times
+- Here are some possible ideas:
+    - An "Init Container" in Kubernetes that runs before your app container
+    - A bash script that runs the previous steps and then starts your application
+        - You would still need a way to start/restart that bash script, detect errors, etc.
