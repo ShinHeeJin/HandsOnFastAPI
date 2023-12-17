@@ -55,3 +55,15 @@ TLS 인증은 IP가 아닌 도메인과 연관되어있다는 점에 유의하�
         ```
   3. [Daphne](https://github.com/django/daphne): the ASGI server built for Django Channels.
   
+# [4. Deployments Concepts](https://fastapi.tiangolo.com/deployment/concepts/)
+- 웹 서버를 배포할 경우 여러가지 컨셉이 있을 수 있습니다.
+    - HTTPS, Running on startup, Restarts, Replication, Memory, Previous steps before starting
+- 이러한 여러가지 컨셉을 고려하여 애플리케이션을 배포방식을 최적으로 설계할 수 있습니다.
+
+## Security - HTTPS
+- Traefik : 인증서 자동 갱신 ✨
+- Caddy : 인증서 자동 갱신 ✨
+- Nginx : 외부 프로세스 ( ex. Certbot )에 의한 인증서 갱신
+- HAProxy : 외부 프로세스 ( ex. Certbot )에 의한 인증서 갱신
+- Kubernetes with an Ingress Controller like Nginx : 외부 프로세스(ex. cert-manager)에 의한 인증서 갱신
+- Handled internally by a cloud provider as part of their services (read below 👇)
